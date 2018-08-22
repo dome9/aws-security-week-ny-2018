@@ -619,7 +619,10 @@
                             "Sid": "Put",
                             "Effect": "Allow",
                           "Principal": { "AWS": {"Fn::Join" : [ "", [ "arn:aws:iam::", { "Ref": "AWS::AccountId" }, ":role/", { "Ref": "S3Role" }  ] ] } },
-                            "Action": "s3:PutObject",
+                             "Action": [
+                                       "s3:GetObject" ,
+                                       "s3:PutObject"
+                             ],
                             "Resource": {
                                 "Fn::Join": [
                                     "",
@@ -766,7 +769,10 @@
                             "Sid": "Put",
                             "Effect": "Allow",
                           "Principal": { "AWS": {"Fn::Join" : [ "", [ "arn:aws:iam::", { "Ref": "AWS::AccountId" }, ":role/", { "Ref": "S3Role" }  ] ] } },
-                            "Action": "s3:PutObject",
+                            "Action": [
+                             "s3:GetObject",
+                             "s3:PutObject"
+                            ],
                             "Resource": {
                                 "Fn::Join": [
                                     "",
@@ -778,12 +784,7 @@
                                         "/*"
                                     ]
                                 ]
-                            },
-                          "Condition": {
-                    "Bool": {
-                      "aws:SecureTransport": "true"
-                    }
-                  }
+                            }
                         },
                       {
                   "Sid": "Stmt1526361042800",
@@ -798,22 +799,32 @@
 
                   }
                 },
-                      {
-            "Sid": "AWSCloudTrailAclCheck20150319",
-            "Effect": "Allow",
-            "Principal": {"Service": "cloudtrail.amazonaws.com"},
-            "Action": "s3:GetBucketAcl",
-             "Resource": {"Fn::Join":  ["", ["arn:aws:s3:::", {"Ref": "S3Bucket5"}]]}
-        },
-        {
-            "Sid": "AWSCloudTrailWrite20150319",
-            "Effect": "Allow",
-            "Principal": {"Service": "cloudtrail.amazonaws.com"},
-            "Action": "s3:PutObject",
-            "Resource": {"Fn::Join":  ["", ["arn:aws:s3:::", {"Ref": "S3Bucket5"},"/AWSLogs/",{"Ref": "AWS::AccountId"}, "/*"]]},
-            "Condition": {"StringEquals": {"s3:x-amz-acl": "bucket-owner-full-control"}}
+                                  {
+            "Sid": "Stmt1504640908907",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "arn:aws:s3:::",
+                                        {
+                                            "Ref": "S3Bucket5"
+                                        },
+                                        "/*"
+                                    ]
+                                ]
+                            },
+            "Condition": {
+                "Bool": {
+                    "aws:SecureTransport": "false"
+                }
+            }
         }
-
                     ]
                 },
                 "Bucket": {
@@ -1218,6 +1229,7 @@
               "Effect": "Allow",
               "Principal": {
                 "Service": [
+                  "ec2.amazonaws.com",
                   "lambda.amazonaws.com"
                 ]
               },
@@ -1247,14 +1259,6 @@
                     "ec2:CreateNetworkInterface",
                     "ec2:DeleteNetworkInterface",
                     "ec2:DescribeNetworkInterfaces"
-                  ],
-                  "Resource": "*"
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "s3:GetObject" ,
-                    "s3:PutObject"
                   ],
                   "Resource": "*"
                 }
