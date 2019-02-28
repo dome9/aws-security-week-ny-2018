@@ -5,8 +5,8 @@
       "Description": "Name of the AWS AMI IN THIS REGION.",
       "Type": "String",
       "MinLength": "12",
-      "MaxLength": "12",
-      "Default": "ami-14c5486b",
+      "MaxLength": "21",
+      "Default": "ami-035be7bafff33b6b6",
       "AllowedPattern": "ami-.*",
       "ConstraintDescription": "must start with ami-*"
     },
@@ -1204,7 +1204,7 @@
             ]
           }
         },
-        "Runtime": "nodejs4.3",
+        "Runtime": "nodejs8.10",
         "VpcConfig": {
           "SecurityGroupIds": [
             {
@@ -1637,7 +1637,7 @@
  			},
  			"Tags": [{
  					"Key": "Name",
- 					"Value": "notificationr"
+ 					"Value": "notification"
  				},
  				{
  					"Key": "env",
@@ -1645,7 +1645,7 @@
  				},
  				{
  					"Key": "Type",
- 					"Value": "prod_notofication_ie"
+ 					"Value": "prod_notification_ie"
  				}
  			],
  			"BlockDeviceMappings": [{
